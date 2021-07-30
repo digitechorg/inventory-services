@@ -1,2 +1,2 @@
 # inventory-services
-RestFul API
+This API will do Inventory Mangement services
