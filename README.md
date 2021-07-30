@@ -59,4 +59,10 @@ SELECT * FROM SALE; // child Table storeId as foreign key
 
 
 
+# Test Data
 
+Single Payload Json : 
+https://github.com/digitechorg/inventory-services/blob/main/testData/SinglePayload.json
+
+Multi Payload Json :
+https://github.com/digitechorg/inventory-services/blob/main/testData/MultiPayload.json
