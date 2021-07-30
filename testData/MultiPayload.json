@@ -1,0 +1,62 @@
+[
+    {
+        "StoreId": 99304,
+        "Sale": [
+            {
+                "ItemName": "T-shirt",
+                "ItemId": 728392017342,
+                "Quantity": 2
+            }
+        ],
+        "Refund": [
+            {
+                "ItemName": "Shorts",
+                "ItemId": 364422297782,
+                "Quantity": 1
+            }
+        ],
+        "Delivery": [
+            {
+                "ItemName": "Polo-shirt",
+                "ItemId": 464368907499,
+                "Quantity": 100
+            },
+            {
+                "ItemName": "T-shirt",
+                "ItemId": 728392017342,
+                "Quantity": 75
+
+            }
+        ]
+    },
+    {
+        "StoreId": 99283,
+        "Sale": [
+            {
+                "ItemName": "T-shirt",
+                "ItemId": 728392017342,
+                "Quantity": 4
+            }
+        ],
+        "Refund": [
+            {
+                "ItemName": "Shorts",
+                "ItemId": 364422297782,
+                "Quantity": 3
+            }
+        ],
+        "Delivery": [
+            {
+                "ItemName": "Polo-shirt",
+                "ItemId": 464368907499,
+                "Quantity": 76
+            },
+            {
+                "ItemName": "T-shirt",
+                "ItemId": 728392017342,
+                "Quantity": 88
+
+            }
+        ]
+    }
+]

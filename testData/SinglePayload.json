@@ -1,0 +1,24 @@
+{
+    "StoreId": 99304,
+    "Refund": [
+        {
+            "ItemName": "T-shirt",
+            "ItemId": 728392017342,
+            "Quantity": 2
+        }
+    ],
+    "Delivery": [
+        {
+            "ItemName": "T-shirt",
+            "ItemId": 728392017342,
+            "Quantity": 3
+        }
+    ],
+    "Sale": [
+        {
+            "ItemName": "T-shirt",
+            "ItemId": 728392017342,
+            "Quantity": 4
+        }
+    ]
+}
