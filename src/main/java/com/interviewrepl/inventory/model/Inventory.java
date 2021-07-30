@@ -1,18 +1,23 @@
 package com.interviewrepl.inventory.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 
+@Component
 @Entity
 @Table(name="INVENTORY")
 public class Inventory {
 
-
     @Id
     @Column(name ="storeId" )
+    @NotNull(message = ("StoreId cannot be null"))
+    @Size(min=5,max=5, message = ("StoreId must be of size 5 characters"))
     @JsonProperty("StoreId")
     public int storeId;
 

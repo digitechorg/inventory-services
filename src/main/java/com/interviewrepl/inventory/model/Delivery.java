@@ -3,6 +3,8 @@ package com.interviewrepl.inventory.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="DELIVERY")
@@ -12,10 +14,15 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long  id;
 
+
+    @NotNull(message = "ItemName can not be null")
+    @Size(max = 40, message = "ItemName cannot be more than 40 characters")
     @Column(name="itemName")
     @JsonProperty("ItemName")
     public String itemName;
 
+
+    @Size(min = 12, max = 12, message = ("ItemId length must be of 12 characters"))
     @Column(name="itemId")
     @JsonProperty("ItemId")
     public long itemId;

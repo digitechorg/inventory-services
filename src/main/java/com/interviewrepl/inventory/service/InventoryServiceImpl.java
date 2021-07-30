@@ -1,6 +1,5 @@
 package com.interviewrepl.inventory.service;
 
-import com.interviewrepl.inventory.controller.InventoryController;
 import com.interviewrepl.inventory.model.Inventory;
 import com.interviewrepl.inventory.repository.InventoryRepository;
 import org.slf4j.Logger;
@@ -33,10 +32,6 @@ public class InventoryServiceImpl implements InventoryService {
         return (List<Inventory>)repository.findAll();
     }
 
-    @Override
-    public List<Inventory> findByIds(List<Integer> storeIds) {
-        return (List<Inventory>)repository.findAllById(storeIds);
-    }
 
     @Override
     public Inventory insert(Inventory inventory) {
@@ -81,14 +76,4 @@ public class InventoryServiceImpl implements InventoryService {
         }
     }
 
-    @Override
-    public boolean deleteAll(List<Inventory> inventoryList) {
-        try {
-            repository.deleteAll(inventoryList);
-            return true;
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            return false;
-        }
-    }
 }

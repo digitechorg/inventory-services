@@ -9,7 +9,7 @@ public interface InventoryService {
     // GET
     Inventory findByStoreId(Integer storeId);
     List<Inventory> findAllInventory();
-    List<Inventory> findByIds(List<Integer> storeId);
+
 
     //POST
     Inventory insert(Inventory inventory);
@@ -21,5 +21,4 @@ public interface InventoryService {
 
     // DELETE
     boolean delete(Integer storeId);
-    boolean deleteAll(List<Inventory> inventoryList);
 }

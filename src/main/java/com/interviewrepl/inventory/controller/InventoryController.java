@@ -6,8 +6,12 @@ import com.interviewrepl.inventory.service.InventoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/api/")
@@ -18,66 +22,52 @@ public class InventoryController {
     Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
     @Autowired
-    InventoryService inventoryService;
+    private InventoryService inventoryService;
 
-    @GetMapping("/allinventory")
-    private List<Inventory> getAllInventory() {
-        return inventoryService.findAllInventory();
+    @GetMapping(path = "/allinventory",produces = {
+            MediaType.APPLICATION_JSON_VALUE})
+    private ResponseEntity<List<Inventory>> getAllInventory() {
+        return new ResponseEntity<List<Inventory>>(inventoryService.findAllInventory(), HttpStatus.OK);
+
     }
 
-    @GetMapping("/inventory/{storeId}")
-    private Inventory getInventoryByStoreId(@PathVariable("storeId") Integer storeId) {
-        return inventoryService.findByStoreId(storeId);
+    @GetMapping(path = "/inventory/{storeId}",produces = {
+            MediaType.APPLICATION_JSON_VALUE})
+    private ResponseEntity<Inventory> getInventoryByStoreId(@PathVariable("storeId") Integer storeId) {
+        if (storeId != null) {
+            return new ResponseEntity<Inventory>(inventoryService.findByStoreId(storeId), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Inventory>(HttpStatus.NO_CONTENT);
+        }
     }
 
 
-    @PostMapping("/inventory")
-    private String saveInventory(@RequestBody Inventory inventory) {
+    @PostMapping(path = "/inventory", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
+            MediaType.APPLICATION_JSON_VALUE})
+    private ResponseEntity<Inventory> saveInventory( @RequestBody  @Valid Inventory inventory) {
+
         if (inventory != null) {
             inventoryService.insert(inventory);
-            return "Added a inventory";
+            return new ResponseEntity<Inventory>(inventoryService.insert(inventory), HttpStatus.OK);
         } else {
-            return REQUEST_NO_BODY;
+            return new ResponseEntity<Inventory>(HttpStatus.NO_CONTENT);
         }
     }
 
-    @PostMapping("/inventory/bulk")
-    public String addInventoryInBulk(@RequestBody List<Inventory> inventoryList) {
-        if(inventoryList != null && !inventoryList.isEmpty()) {
+    @PostMapping(path = "/inventory/bulk", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<Inventory>> addInventoryInBulk(@RequestBody List<Inventory> inventoryList) {
+        if (inventoryList != null && !inventoryList.isEmpty()) {
             inventoryService.insertAll(inventoryList);
-            return String.format("Added %d inventory in bulk", inventoryList.size());
+            return new ResponseEntity<List<Inventory>>(inventoryService.insertAll(inventoryList), HttpStatus.OK);
         } else {
-            return REQUEST_NO_BODY;
+            return new ResponseEntity<List<Inventory>>(HttpStatus.NO_CONTENT);
         }
     }
 
-    @DeleteMapping("/inventory/{storeId}")
-    public String deleteInventory(@PathVariable("storeId") int storeId) {
-        if(storeId > 0) {
-            if(inventoryService.delete(storeId)) {
-                return "Deleted the inventory.";
-            } else {
-                return "Cannot delete the inventory.";
-            }
-        }
-        return "The storeId is invalid for the inventory.";
-    }
 
-    @DeleteMapping("/inventory/bulk")
-    public String deleteInventoryInBulk(@RequestBody List<Inventory> inventoryList) {
-        if(!inventoryList.isEmpty()) {
-            if(inventoryService.deleteAll(inventoryList)) {
-                return "Deleted the inventoryList.";
-            } else {
-                return "Cannot delete the inventoryList.";
-            }
-        }
-        return "The request should contain a list of inventoryList to be deleted.";
-    }
-
-    @PutMapping("/inventory")
-    public String updateInventory(@RequestBody Inventory inventory) {
-        if(inventory != null) {
+    @PutMapping(path = "/inventory", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public String updateInventory(@Valid @RequestBody Inventory inventory) {
+        if (inventory != null) {
             inventoryService.update(inventory);
             return "Updated inventory";
         } else {
@@ -85,14 +75,26 @@ public class InventoryController {
         }
     }
 
-    @PutMapping("/inventory/bulk")
+    @PutMapping(path = "/inventory/bulk", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public String updateInventoryInBulk(@RequestBody List<Inventory> inventoryList) {
-        if(inventoryList != null) {
+        if (inventoryList != null) {
             inventoryService.updateAll(inventoryList);
             return "Updated inventoryList.";
         } else {
             return REQUEST_NO_BODY;
         }
+    }
+
+    @DeleteMapping(path = "/inventory/{storeId}")
+    public String deleteInventory(@PathVariable("storeId") int storeId) {
+        if (storeId > 0) {
+            if (inventoryService.delete(storeId)) {
+                return "Deleted the inventory.";
+            } else {
+                return "Cannot delete the inventory.";
+            }
+        }
+        return "The storeId is invalid for the inventory.";
     }
 
 }
