@@ -29,6 +29,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import static bdd.cucumber.test.utils.JavaProcessBuilder.launchApplication;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -37,17 +38,31 @@ public class StepDefinition {
 
 
     private static Logger logger = LoggerFactory.getLogger(StepDefinition.class);
-
+    private static boolean firstTime = true;
     private String apiServiceUrl = "http://localhost:8080";
 
     private HttpResponse<String> response;
 
+    private synchronized static void setFirstTime() {
+        firstTime = false;
+    }
 
     private Scenario scenario;
 
     @Before
-    public void before(Scenario scenario) {
+    public void before(Scenario scenario) throws IOException, InterruptedException {
         this.scenario = scenario;
+        if(firstTime){
+            setFirstTime();
+            addShutDownHook(launchApplication());
+        }
+    }
+
+    private void addShutDownHook(Process process){
+        // kill running process
+        Runtime.getRuntime().addShutdownHook(new Thread(()->{
+            process.destroy();
+        }));
     }
 
     @Given("^API Service is started$")

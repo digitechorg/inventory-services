@@ -1,8 +1,28 @@
-plugins {
-    id 'org.springframework.boot' version '2.4.9'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+
+buildscript {
+    ext{
+        springBootVersion = '2.4.9'
+        springDependencyManagementVersion = '1.0.11.RELEASE'
+    }
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath  "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}"
+        classpath 'ru.alfalab.gradle:cucumber-reporting-gradle-plugin:0.1.0'
+    }
 }
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'ru.alfalab.cucumber-reporting'
+
 
 group = 'com.interviewrepl'
 version = '0.0.1-SNAPSHOT'
@@ -38,4 +58,23 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+
+// Functional testing using BDD Cucumber
+
+task bdd(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'org.junit.runner.JUnitCore'
+    def param = []
+    param.add("-Dspring.profiles.active=local")
+    args = ['bdd.cucumber.test.runner.BDDTestRunner']
+    jvmArgs = param;
+    systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
+}
+
+// to generate cucumber JVM report
+cucumberReporting {
+    cucumberResultsDirectory = file("${project.buildDir}/cucumber") // cucumber results dir (eg. cucumber.json location)
+    outputDirectory = file("${project.buildDir}/reports/cucumber") // directory for save html reports
 }
