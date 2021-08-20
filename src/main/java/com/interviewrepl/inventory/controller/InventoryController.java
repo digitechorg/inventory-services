@@ -24,16 +24,16 @@ public class InventoryController {
     @Autowired
     private InventoryService inventoryService;
 
-    @GetMapping(path = "/allinventory",produces = {
+    @GetMapping(path = "/allinventory", produces = {
             MediaType.APPLICATION_JSON_VALUE})
-    private ResponseEntity<List<Inventory>> getAllInventory() {
+    public ResponseEntity<List<Inventory>> getAllInventory() {
         return new ResponseEntity<List<Inventory>>(inventoryService.findAllInventory(), HttpStatus.OK);
 
     }
 
-    @GetMapping(path = "/inventory/{storeId}",produces = {
+    @GetMapping(path = "/inventory/{storeId}", produces = {
             MediaType.APPLICATION_JSON_VALUE})
-    private ResponseEntity<Inventory> getInventoryByStoreId(@PathVariable("storeId") Integer storeId) {
+    public ResponseEntity<Inventory> getInventoryByStoreId(@PathVariable("storeId") Integer storeId) {
         if (storeId != null) {
             return new ResponseEntity<Inventory>(inventoryService.findByStoreId(storeId), HttpStatus.OK);
         } else {
@@ -42,23 +42,23 @@ public class InventoryController {
     }
 
 
+
     @PostMapping(path = "/inventory", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
             MediaType.APPLICATION_JSON_VALUE})
-    private ResponseEntity<Inventory> saveInventory( @RequestBody  @Valid Inventory inventory) {
-
-        if (inventory != null) {
-            inventoryService.insert(inventory);
-            return new ResponseEntity<Inventory>(inventoryService.insert(inventory), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Inventory>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Inventory> saveInventory(@RequestBody @Valid Inventory inventory) {
+        inventory = inventoryService.insert(inventory);
+        if (inventory == null) {
+            return new ResponseEntity<Inventory>(HttpStatus.FORBIDDEN);
         }
+        return new ResponseEntity<Inventory>(inventory, HttpStatus.CREATED);
     }
+
 
     @PostMapping(path = "/inventory/bulk", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<Inventory>> addInventoryInBulk(@RequestBody List<Inventory> inventoryList) {
+        inventoryService.insertAll(inventoryList);
         if (inventoryList != null && !inventoryList.isEmpty()) {
-            inventoryService.insertAll(inventoryList);
-            return new ResponseEntity<List<Inventory>>(inventoryService.insertAll(inventoryList), HttpStatus.OK);
+            return new ResponseEntity<List<Inventory>>(inventoryList, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<List<Inventory>>(HttpStatus.NO_CONTENT);
         }
