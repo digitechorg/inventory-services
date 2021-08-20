@@ -13,9 +13,7 @@ repositories {
 }
 
 ext {
-
     cucumberVersion = "6.10.0"
-    restassuredVersion = "4.1.2"
 }
 
 dependencies {
@@ -35,7 +33,6 @@ dependencies {
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: "$cucumberVersion"
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: "$cucumberVersion"
     testImplementation group: 'org.mock-server', name: 'mockserver-spring-test-listener', version: "5.11.2"
-
 }
 
 

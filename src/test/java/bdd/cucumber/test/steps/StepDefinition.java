@@ -62,8 +62,8 @@ public class StepDefinition {
 
     }
 
-    @When("User send a post request then it receives a valid response")
-    public void user_send_a_post_request_then_it_receives_a_valid_response() throws URISyntaxException, IOException, InterruptedException, JSONException {
+    @When("User sends a POST request to insert inventory records then it receives a valid response")
+    public void userSendsAPOSTRequestToInsertInventoryRecordsThenItReceivesAValidResponse() throws URISyntaxException, IOException, InterruptedException, JSONException {
         Helper helper = getHelper();
         Inventory inventory = helper.buildInventory1();
         String jsonBody = helper.mapToJson(inventory);
@@ -75,20 +75,14 @@ public class StepDefinition {
                 .header("Content-Type", "application/json")
                 .build();
         scenario.log(String.format("Request: %1$s", request.toString()));
-
         this.response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         String outputInJson = response.body();
-        //JSONObject actualJSONString = new JSONObject(outputInJson);
-       // JSONObject expectedJSONString = new JSONObject(jsonBody);
-        System.out.println(" outputInJson " + outputInJson);
-
         JSONAssert.assertEquals(outputInJson, jsonBody,
                 new CustomComparator(JSONCompareMode.LENIENT,
-                        new Customization("Delivery[ItemId=728392017342].id", (o1, o2) -> true),
+                        new Customization("Delivery[ItemId=728392017342].id", (o1, o2) -> true),  // skipping comparison of Json fields which are not static
                         new Customization("Refund[ItemId=728392017342].id", (o1, o2) -> true),
                         new Customization("Sale[ItemId=728392017342].id", (o1, o2) -> true)));
-        System.out.println(" response status code " + response.statusCode());
         Assert.assertEquals(HttpStatus.CREATED.value(), response.statusCode());
     }
 
@@ -97,4 +91,16 @@ public class StepDefinition {
         return new Helper();
     }
 
+
+    @When("User sends a GET request to fetch the inventory records by storeId {string} then it receives a valid response")
+    public void userSendsAGETRequestToFetchTheInventoryRecordsByStoreIdThenItReceivesAValidResponse(String storeId) throws URISyntaxException, IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest
+                .newBuilder(new URI(apiServiceUrl + "/api/inventory/" + storeId))
+                .header("accept", "application/json")
+                .build();
+        scenario.log(String.format("Request: %1$s", request.toString()));
+        this.response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+    }
 }
