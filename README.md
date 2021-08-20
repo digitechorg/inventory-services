@@ -28,6 +28,7 @@ Run below command
      Please refer below screenshot for understanding
 https://github.com/digitechorg/inventory-services/blob/main/testData/howToRun.JPG
 
+
 # Database
 in-memory Database (H2)
 
