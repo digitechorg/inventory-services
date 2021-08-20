@@ -23,10 +23,17 @@ and stepdefinitions and runner has been added inside package bdd.cucumber.test
 
 # How to build,JUnit test, functional testing and generate cucumber JVM report in single command
 Run below command 
+
      gradle clean build bdd generateCucumberReport
      
      Please refer below screenshot for understanding
 https://github.com/digitechorg/inventory-services/blob/main/testData/howToRun.JPG
+
+
+# Cucumber JVM Report
+
+https://github.com/digitechorg/inventory-services/blob/main/testData/cucumberJVMReport.JPG
+
 
 
 # Database
