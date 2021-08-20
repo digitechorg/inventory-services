@@ -9,6 +9,8 @@ SpringBoot
 
 Gradle (as build tool)
 
+BDD Cucumber (for functional testing)
+
 # Junit
 
 Junit has been added for controller, service and repository class
