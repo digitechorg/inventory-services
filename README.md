@@ -3,11 +3,21 @@ This API will do Inventory Management services. This RestFulAPI has 2 seperate e
 Please refer endpoint details to test CRUD operations on this API using PostMan or other Rest Clients.
 
 # technology stack
-Java 8
+Java 11
 
 SpringBoot
 
 Gradle (as build tool)
+
+# Junit
+
+Junit has been added for controller, service and repository class
+Package : com.interviewrepl.inventory
+
+# BDD Cucumber
+
+For functional testing,inventoryBDDtest.feature file has been added 
+and stepdefinitions and runner has been added inside package bdd.cucumber.test 
 
 # Database
 in-memory Database (H2)
